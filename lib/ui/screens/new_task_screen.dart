@@ -43,6 +43,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           _getTaskStatusCount();
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSummarySection(),
             Expanded(
