@@ -5,7 +5,6 @@ import 'package:task_manager/data/models/task_model.dart';
 import 'package:task_manager/data/services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/widgets/centered_circular_progress_indicator.dart';
-import 'package:task_manager/ui/widgets/no_task_massage.dart';
 import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 import 'package:task_manager/ui/widgets/task_card.dart';
 
@@ -28,30 +27,24 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        _getCompletedTaskList();
-      },
-      child: Visibility(
-        visible: !_getCompletedTaskListInProgress,
-        replacement: const CenteredCircularProgressIndicator(),
-        child: Visibility(
-          visible: _completedTaskList.isNotEmpty,
-          replacement: const NoTaskMassage(),
-          child: ListView.separated(
-            itemCount: _completedTaskList.length,
-            itemBuilder: (context, index) {
-              return TaskCard(
-                  taskModel: _completedTaskList[index],
-                  updateWidget: () {
-                    _getCompletedTaskList();
-                    setState(() {});
-                  });
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 8);
-            },
-          ),
+    return Visibility(
+      visible: !_getCompletedTaskListInProgress,
+      replacement: const CenteredCircularProgressIndicator(),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          _getCompletedTaskList();
+        },
+        child: ListView.separated(
+          itemCount: _completedTaskList.length,
+          itemBuilder: (context, index) {
+            return TaskCard(
+              taskModel: _completedTaskList[index],
+              onRefreshList: _getCompletedTaskList,
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: 8);
+          },
         ),
       ),
     );

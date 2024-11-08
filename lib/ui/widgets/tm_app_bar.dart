@@ -35,20 +35,20 @@ class TMAppBar extends StatelessWidget implements PreferredSizeWidget {
               backgroundColor: Colors.white,
             ),
             const SizedBox(width: 16),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rabbil Hasan',
-                    style: TextStyle(
+                    AuthController.userData?.fullName ?? '',
+                    style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    'test@gmail.com',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+                    AuthController.userData?.email ?? '',
+                    style: const TextStyle(fontSize: 12, color: Colors.white),
                   )
                 ],
               ),
@@ -57,6 +57,7 @@ class TMAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () async {
                 await AuthController.clearUserData();
                 Navigator.pushAndRemoveUntil(
+                  // ignore: use_build_context_synchronously
                   context,
                   MaterialPageRoute(builder: (context) => const SignInScreen()),
                   (predicate) => false,
